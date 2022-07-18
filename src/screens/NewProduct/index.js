@@ -31,11 +31,16 @@ const NewProduct = ({navigation}) => {
 
   const pickImages = () => {
     ImagePicker.openPicker({
+      includeBase64: true,
       width: 400,
       height: 400,
       multiple: true,
     }).then(images => {
-      console.log(images);
+      let base64Imgs = [];
+      images.forEach((item, i) => {
+        base64Imgs.push(item.data);
+      });
+      setmedia(base64Imgs);
     });
   };
 
