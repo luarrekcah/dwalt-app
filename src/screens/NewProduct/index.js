@@ -6,7 +6,7 @@ import {Picker} from '@react-native-picker/picker';
 import Colors from '../../globalStyles/colors';
 import moment from 'moment';
 moment.locale('pt-br');
-//https://github.com/ivpusic/react-native-image-crop-picker
+import ImagePicker from 'react-native-image-crop-picker';
 
 const NewProduct = ({navigation}) => {
   let [code, setcode] = React.useState('');
@@ -23,9 +23,21 @@ const NewProduct = ({navigation}) => {
   let [brand, setbrand] = React.useState();
   let [power, setpower] = React.useState('');
   let [quantity, setquantity] = React.useState('');
-  let [outputvoltage, setoutputvoltage] = React.useState('');
+  let [outputvoltage, setoutputvoltage] = React.useState();
+
+  let [media, setmedia] = React.useState([]);
 
   const [enviado, setEnviado] = React.useState(false);
+
+  const pickImages = () => {
+    ImagePicker.openPicker({
+      width: 400,
+      height: 400,
+      multiple: true,
+    }).then(images => {
+      console.log(images);
+    });
+  };
 
   const enviarDados = () => {
     let products = [];
@@ -43,7 +55,7 @@ const NewProduct = ({navigation}) => {
           title,
           resumedtitle,
           value,
-          mediaSrc: ['aa'],
+          mediaSrc: media,
           datasheet: {
             systemType: systemtype,
             inverter: {
@@ -83,6 +95,7 @@ const NewProduct = ({navigation}) => {
             onChangeText={newText => setcode(newText)}
           />
           <TextInput
+            multiline
             style={styles.textinput}
             label="Título"
             value={title}
@@ -136,6 +149,7 @@ const NewProduct = ({navigation}) => {
             onValueChange={(itemValue, itemIndex) => setbrand(itemValue)}>
             <Picker.Item label="Módulo Solar: Jinko" value="Jinko" />
             <Picker.Item label="Módulo Solar: PhonoSolar" value="PhonoSolar" />
+            <Picker.Item label="Módulo Solar: JAsolar" value="JAsolar" />
             <Picker.Item label="Módulo Solar: Outro" value="Outro" />
           </Picker>
           <TextInput
@@ -161,6 +175,13 @@ const NewProduct = ({navigation}) => {
             <Picker.Item label="Tensão de Saída: 380v" value="380" />
             <Picker.Item label="Tensão de Saída: Outro" value="Outro" />
           </Picker>
+          <Button
+            style={styles.button}
+            icon="send"
+            mode="contained"
+            onPress={() => pickImages()}>
+            Adicionar Fotos
+          </Button>
           {enviado === false ? (
             <Button
               style={styles.button}
