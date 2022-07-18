@@ -2,6 +2,8 @@ import React from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {List, TextInput} from 'react-native-paper';
 import database from '@react-native-firebase/database';
+import {Picker} from '@react-native-picker/picker';
+//https://github.com/ivpusic/react-native-image-crop-picker
 
 const NewProduct = ({navigation}) => {
   let [code, setcode] = React.useState('');
@@ -10,6 +12,8 @@ const NewProduct = ({navigation}) => {
   let [resumedtitle, setresumedtitle] = React.useState('');
   let [description, setdescription] = React.useState('');
   let [value, setvalue] = React.useState('');
+
+  const [systemtype, setsystemtype] = React.useState();
 
   let [brand, setbrand] = React.useState('');
   let [power, setpower] = React.useState('');
@@ -94,6 +98,14 @@ const NewProduct = ({navigation}) => {
             value={resumedtitle}
             onChangeText={newText => setresumedtitle(newText)}
           />
+        </List.Section>
+        <List.Section title="Informações Técnicas">
+          <Picker
+            selectedValue={systemtype}
+            onValueChange={(itemValue, itemIndex) => setsystemtype(itemValue)}>
+            <Picker.Item label="Tipo de Sistema: Ongrid" value="Ongrid" />
+            <Picker.Item label="Tipo de Sistema: Offgrid" value="Offgrid" />
+          </Picker>
         </List.Section>
       </ScrollView>
     </View>
