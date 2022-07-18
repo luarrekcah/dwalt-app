@@ -1,8 +1,11 @@
 import React from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
-import {List, TextInput} from 'react-native-paper';
+import {List, TextInput, Button} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import {Picker} from '@react-native-picker/picker';
+import Colors from '../../globalStyles/colors';
+import moment from 'moment';
+moment.locale('pt-br');
 //https://github.com/ivpusic/react-native-image-crop-picker
 
 const NewProduct = ({navigation}) => {
@@ -36,7 +39,7 @@ const NewProduct = ({navigation}) => {
         products.push({
           code,
           composition,
-          postedDate: '',
+          postedDate: moment().format(),
           title,
           resumedtitle,
           value,
@@ -158,6 +161,19 @@ const NewProduct = ({navigation}) => {
             <Picker.Item label="Tensão de Saída: 380v" value="380" />
             <Picker.Item label="Tensão de Saída: Outro" value="Outro" />
           </Picker>
+          {enviado === false ? (
+            <Button
+              style={styles.button}
+              icon="send"
+              mode="contained"
+              onPress={() => enviarDados()}>
+              Enviar
+            </Button>
+          ) : (
+            <Button style={styles.sucessButton} icon="check" mode="contained">
+              Enviado
+            </Button>
+          )}
         </List.Section>
       </ScrollView>
     </View>
@@ -167,6 +183,16 @@ const NewProduct = ({navigation}) => {
 const styles = new StyleSheet.create({
   container: {},
   textinput: {
+    margin: 10,
+  },
+  button: {
+    width: '100%',
+    margin: 10,
+    backgroundColor: Colors.color.primary,
+  },
+  sucessButton: {
+    backgroundColor: 'green',
+    width: '100%',
     margin: 10,
   },
 });
