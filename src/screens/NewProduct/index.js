@@ -10,12 +10,14 @@ const NewProduct = ({navigation}) => {
   let [composition, setcomposition] = React.useState('');
   let [title, settitle] = React.useState('');
   let [resumedtitle, setresumedtitle] = React.useState('');
-  let [description, setdescription] = React.useState('');
   let [value, setvalue] = React.useState('');
 
   const [systemtype, setsystemtype] = React.useState();
+  const [invertype, setinvertype] = React.useState();
 
-  let [brand, setbrand] = React.useState('');
+  let [inverpower, setinverpower] = React.useState('');
+
+  let [brand, setbrand] = React.useState();
   let [power, setpower] = React.useState('');
   let [quantity, setquantity] = React.useState('');
   let [outputvoltage, setoutputvoltage] = React.useState('');
@@ -37,14 +39,13 @@ const NewProduct = ({navigation}) => {
           postedDate: '',
           title,
           resumedtitle,
-          description,
           value,
           mediaSrc: ['aa'],
           datasheet: {
-            systemType: 'ongrid',
+            systemType: systemtype,
             inverter: {
-              brand: 'Growatt',
-              power: '2',
+              brand: invertype,
+              power: inverpower,
             },
             modules: {
               brand: brand,
@@ -79,13 +80,6 @@ const NewProduct = ({navigation}) => {
             onChangeText={newText => setcode(newText)}
           />
           <TextInput
-            multiline
-            style={styles.textinput}
-            label="Composição"
-            value={composition}
-            onChangeText={newText => setcomposition(newText)}
-          />
-          <TextInput
             style={styles.textinput}
             label="Título"
             value={title}
@@ -98,6 +92,20 @@ const NewProduct = ({navigation}) => {
             value={resumedtitle}
             onChangeText={newText => setresumedtitle(newText)}
           />
+          <TextInput
+            multiline
+            style={styles.textinput}
+            label="Composição"
+            value={composition}
+            onChangeText={newText => setcomposition(newText)}
+          />
+          <TextInput
+            style={styles.textinput}
+            placeholder="XX.XXX,XX"
+            label="Valor total do Sistema"
+            value={value}
+            onChangeText={newText => setvalue(newText)}
+          />
         </List.Section>
         <List.Section title="Informações Técnicas">
           <Picker
@@ -105,6 +113,50 @@ const NewProduct = ({navigation}) => {
             onValueChange={(itemValue, itemIndex) => setsystemtype(itemValue)}>
             <Picker.Item label="Tipo de Sistema: Ongrid" value="Ongrid" />
             <Picker.Item label="Tipo de Sistema: Offgrid" value="Offgrid" />
+          </Picker>
+          <Picker
+            selectedValue={invertype}
+            onValueChange={(itemValue, itemIndex) => setinvertype(itemValue)}>
+            <Picker.Item label="Inversor: Growatt" value="Growatt" />
+            <Picker.Item label="Inversor: Fronius" value="Fronius" />
+            <Picker.Item label="Inversor: Outro" value="Outro" />
+          </Picker>
+          <TextInput
+            style={styles.textinput}
+            placeholder="x,x"
+            label="Potência do Inversor (Em kW)"
+            value={inverpower}
+            onChangeText={newText => setinverpower(newText)}
+          />
+          <Picker
+            selectedValue={brand}
+            onValueChange={(itemValue, itemIndex) => setbrand(itemValue)}>
+            <Picker.Item label="Módulo Solar: Jinko" value="Jinko" />
+            <Picker.Item label="Módulo Solar: PhonoSolar" value="PhonoSolar" />
+            <Picker.Item label="Módulo Solar: Outro" value="Outro" />
+          </Picker>
+          <TextInput
+            style={styles.textinput}
+            placeholder="xxx"
+            label="Potência dos Módulos (Em Watts)"
+            value={power}
+            onChangeText={newText => setpower(newText)}
+          />
+          <TextInput
+            style={styles.textinput}
+            placeholder="xxx"
+            label="Quantidade de Módulos"
+            value={quantity}
+            onChangeText={newText => setquantity(newText)}
+          />
+          <Picker
+            selectedValue={outputvoltage}
+            onValueChange={(itemValue, itemIndex) =>
+              setoutputvoltage(itemValue)
+            }>
+            <Picker.Item label="Tensão de Saída: 220v" value="220" />
+            <Picker.Item label="Tensão de Saída: 380v" value="380" />
+            <Picker.Item label="Tensão de Saída: Outro" value="Outro" />
           </Picker>
         </List.Section>
       </ScrollView>
