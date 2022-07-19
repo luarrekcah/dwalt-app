@@ -12,6 +12,7 @@ const NewProduct = ({navigation}) => {
   let [code, setcode] = React.useState('');
   let [composition, setcomposition] = React.useState('');
   let [title, settitle] = React.useState('');
+  let [description, setdescription] = React.useState('');
   let [resumedtitle, setresumedtitle] = React.useState('');
   let [value, setvalue] = React.useState('');
 
@@ -59,6 +60,7 @@ const NewProduct = ({navigation}) => {
           postedDate: moment().format(),
           title,
           resumedtitle,
+          description,
           value,
           mediaSrc: `${media}`,
           datasheet: {
@@ -105,6 +107,13 @@ const NewProduct = ({navigation}) => {
             label="Título"
             value={title}
             onChangeText={newText => settitle(newText)}
+          />
+          <TextInput
+            style={styles.textinput}
+            placeholder="GF ..."
+            label="Descrição"
+            value={description}
+            onChangeText={newText => setdescription(newText)}
           />
           <TextInput
             style={styles.textinput}
