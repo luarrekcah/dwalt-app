@@ -1,12 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  View,
-  FlatList,
-  Image,
-  Text,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, FlatList, Text, StyleSheet, Dimensions} from 'react-native';
 import {Card, FAB} from 'react-native-paper';
 import Colors from '../../../../globalStyles/colors';
 import database from '@react-native-firebase/database';
