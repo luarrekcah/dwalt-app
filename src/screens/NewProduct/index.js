@@ -38,7 +38,7 @@ const NewProduct = ({navigation}) => {
     }).then(images => {
       let base64Imgs = [];
       images.forEach((item, i) => {
-        base64Imgs.push(item.data);
+        base64Imgs.push('data:image/png;base64,' + item.data);
       });
       setmedia(base64Imgs);
     });
@@ -60,7 +60,7 @@ const NewProduct = ({navigation}) => {
           title,
           resumedtitle,
           value,
-          mediaSrc: `data:image/png;base64,${media}`,
+          mediaSrc: `${media}`,
           datasheet: {
             systemType: systemtype,
             inverter: {
