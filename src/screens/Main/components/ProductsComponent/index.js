@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {View, FlatList, Text, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  FlatList,
+  Image,
+  Text,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import {Card, FAB} from 'react-native-paper';
 import Colors from '../../../../globalStyles/colors';
 import database from '@react-native-firebase/database';
@@ -26,7 +33,7 @@ const Products = ({navigation}) => {
           <Card style={styles.card}>
             <Card.Cover
               source={{
-                uri: item.mediaSrc[0],
+                uri: 'data:image/png;base64,' + item.mediaSrc[0],
               }}
             />
             <Text style={styles.title}>
