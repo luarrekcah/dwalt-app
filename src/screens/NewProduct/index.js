@@ -189,13 +189,23 @@ const NewProduct = ({navigation}) => {
             <Picker.Item label="Tensão de Saída: 380v" value="380" />
             <Picker.Item label="Tensão de Saída: Outro" value="Outro" />
           </Picker>
-          <Button
-            style={styles.button}
-            icon="send"
-            mode="contained"
-            onPress={() => pickImages()}>
-            Adicionar Fotos
-          </Button>
+          {media.length !== 0 ? (
+            <Button
+              style={styles.sucessButton}
+              icon="camera"
+              mode="contained"
+              onPress={() => pickImages()}>
+              ({media.length}) Fotos Adicionadas
+            </Button>
+          ) : (
+            <Button
+              style={styles.button}
+              icon="camera"
+              mode="contained"
+              onPress={() => pickImages()}>
+              Adicionar Fotos
+            </Button>
+          )}
           {enviado === false ? (
             <Button
               style={styles.button}
