@@ -10,7 +10,7 @@ import GenProjects from './screens/GenProjects';
 import GenVagasStaff from './screens/GenVagasStaff';
 import GenStaffs from './screens/GenStaffs';
 import GenCustomers from './screens/GenCustomers';
-import NewProduct from './screens/NewProduct';
+import Project from './screens/GenProjects/project';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,7 +60,7 @@ const Routes = () => {
         />
         <Stack.Screen
           name="NewProduct"
-          component={NewProduct}
+          component={Project}
           options={{title: 'Adicionar um novo produto'}}
         />
       </Stack.Navigator>
