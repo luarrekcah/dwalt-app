@@ -46,14 +46,14 @@ const NewProject = ({navigation}) => {
           projects = snapshot.val();
         }
         projects.push({
-          id: title.slice(' ', ''),
+          id: projects.length + title.replaceAll(' ', '-'),
           title,
           desc,
           customer,
           coords,
           date: {
-            initial: '',
-            end: '',
+            initial: obrainit,
+            end: obrafim,
           },
           type,
           media,
