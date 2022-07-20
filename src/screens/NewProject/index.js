@@ -4,6 +4,7 @@ import {List, TextInput, Button} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import ImagePicker from 'react-native-image-crop-picker';
 import Colors from '../../globalStyles/colors';
+import {Picker} from '@react-native-picker/picker';
 
 const NewProject = ({navigation}) => {
   let [id, setid] = React.useState('');
@@ -11,8 +12,11 @@ const NewProject = ({navigation}) => {
   let [desc, setdesc] = React.useState('');
   let [customer, setcustomer] = React.useState('');
   let [coords, setcoords] = React.useState('');
+  let [type, settype] = React.useState();
 
   let [media, setmedia] = React.useState([]);
+
+  const [enviado, setEnviado] = React.useState(false);
 
   const pickImages = () => {
     ImagePicker.openPicker({
@@ -39,7 +43,7 @@ const NewProject = ({navigation}) => {
           projects = snapshot.val();
         }
         projects.push({
-          id,
+          id: title.slice(' ', ''),
           title,
           desc,
           customer,
@@ -69,9 +73,67 @@ const NewProject = ({navigation}) => {
           <TextInput
             style={styles.textinput}
             label="Título do Projeto"
+            placeholder="Residência de Fulano"
             value={title}
             onChangeText={newText => settitle(newText)}
           />
+          <TextInput
+            style={styles.textinput}
+            label="Descrição do Projeto"
+            value={desc}
+            onChangeText={newText => setdesc(newText)}
+          />
+          <TextInput
+            style={styles.textinput}
+            label="Identificação do Cliente"
+            placeholder="José"
+            value={customer}
+            onChangeText={newText => setcustomer(newText)}
+          />
+          <TextInput
+            style={styles.textinput}
+            label="Coordenadas da Instalação"
+            placeholder="-10.33562, -67.184761662"
+            value={coords}
+            onChangeText={newText => setcoords(newText)}
+          />
+          <Picker
+            selectedValue={type}
+            onValueChange={(itemValue, itemIndex) => settype(itemValue)}>
+            <Picker.Item label="Tipo: Residencial" value="residencial" />
+            <Picker.Item label="Tipo: Comercial" value="comercial" />
+            <Picker.Item label="Tipo: Usina" value="usina" />
+          </Picker>
+          {media.length !== 0 ? (
+            <Button
+              style={styles.sucessButton}
+              icon="camera"
+              mode="contained"
+              onPress={() => pickImages()}>
+              ({media.length}) Fotos Adicionadas
+            </Button>
+          ) : (
+            <Button
+              style={styles.button}
+              icon="camera"
+              mode="contained"
+              onPress={() => pickImages()}>
+              Adicionar Fotos
+            </Button>
+          )}
+          {enviado === false ? (
+            <Button
+              style={styles.button}
+              icon="send"
+              mode="contained"
+              onPress={() => enviarDados()}>
+              Enviar
+            </Button>
+          ) : (
+            <Button style={styles.sucessButton} icon="check" mode="contained">
+              Enviado
+            </Button>
+          )}
         </List.Section>
       </ScrollView>
     </View>
