@@ -3,9 +3,9 @@ import {View, ScrollView, StyleSheet} from 'react-native';
 import {List, TextInput, Button} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import ImagePicker from 'react-native-image-crop-picker';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Colors from '../../globalStyles/colors';
 
-const Project = ({navigation}) => {
+const NewProject = ({navigation}) => {
   let [id, setid] = React.useState('');
   let [title, settitle] = React.useState('');
   let [desc, setdesc] = React.useState('');
@@ -97,4 +97,4 @@ const styles = new StyleSheet.create({
   },
 });
 
-export default Project;
+export default NewProject;

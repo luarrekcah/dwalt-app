@@ -10,7 +10,8 @@ import GenProjects from './screens/GenProjects';
 import GenVagasStaff from './screens/GenVagasStaff';
 import GenStaffs from './screens/GenStaffs';
 import GenCustomers from './screens/GenCustomers';
-import Project from './screens/GenProjects/project';
+import NewProduct from './screens/NewProduct';
+import NewProject from './screens/NewProject';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,11 @@ const Routes = () => {
           options={{title: 'Gerenciar Projetos'}}
         />
         <Stack.Screen
+          name="NewProject"
+          component={NewProject}
+          options={{title: 'Gerenciar Projetos'}}
+        />
+        <Stack.Screen
           name="GenVagasStaff"
           component={GenVagasStaff}
           options={{title: 'Gerenciar Vagas Staff'}}
@@ -60,7 +66,7 @@ const Routes = () => {
         />
         <Stack.Screen
           name="NewProduct"
-          component={Project}
+          component={NewProduct}
           options={{title: 'Adicionar um novo produto'}}
         />
       </Stack.Navigator>
