@@ -12,6 +12,9 @@ const NewProject = ({navigation}) => {
   let [desc, setdesc] = React.useState('');
   let [customer, setcustomer] = React.useState('');
   let [coords, setcoords] = React.useState('');
+  let [obrainit, setobrainit] = React.useState('');
+  let [obrafim, setobrafim] = React.useState('');
+
   let [type, settype] = React.useState();
 
   let [media, setmedia] = React.useState([]);
@@ -96,6 +99,20 @@ const NewProject = ({navigation}) => {
             placeholder="-10.33562, -67.184761662"
             value={coords}
             onChangeText={newText => setcoords(newText)}
+          />
+          <TextInput
+            style={styles.textinput}
+            label="Início das Obras"
+            placeholder="DD/MM/AAAA"
+            value={obrainit}
+            onChangeText={newText => setobrainit(newText)}
+          />
+          <TextInput
+            style={styles.textinput}
+            label="Fim/Previsão das Obras"
+            placeholder="DD/MM/AAAA"
+            value={obrafim}
+            onChangeText={newText => setobrafim(newText)}
           />
           <Picker
             selectedValue={type}

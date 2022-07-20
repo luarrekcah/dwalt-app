@@ -55,6 +55,7 @@ const GenProjects = ({navigation}) => {
 const styles = new StyleSheet.create({
   container: {
     margin: 20,
+    flex: 1,
   },
   backImage: {
     margin: 10,
