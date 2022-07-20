@@ -8,6 +8,7 @@ const ConfigSwitchs = () => {
   const [isSwitchManuOn, setIsSwitchManuOn] = React.useState(false);
   const [isSwitchCompComOn, setIsSwitchCompComOn] = React.useState(false);
   const [isSwitchSimuBVOn, setIsSwitchSimuBVOn] = React.useState(false);
+  const [isSwitchlojaOn, setIsSwitchlojaOn] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
 
@@ -51,6 +52,20 @@ const ConfigSwitchs = () => {
                 compsGeral: !isSwitchCompComOn,
               });
               console.log('Complementar : ' + !isSwitchCompComOn);
+            }}
+          />
+        </View>
+        <View style={styles.switchs}>
+          <Text>Loja do Site</Text>
+          <Switch
+            value={isSwitchlojaOn}
+            onValueChange={() => {
+              setIsSwitchlojaOn(!isSwitchlojaOn);
+              onToggleSnackBar();
+              database().ref('/switches').update({
+                loja: !isSwitchlojaOn,
+              });
+              console.log('Loja : ' + !isSwitchlojaOn);
             }}
           />
         </View>
