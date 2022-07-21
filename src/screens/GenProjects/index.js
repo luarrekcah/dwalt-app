@@ -34,6 +34,8 @@ const GenProjects = ({navigation}) => {
               source={{
                 uri: item.media[0],
               }}
+              // eslint-disable-next-line react-native/no-inline-styles
+              imageStyle={{opacity: 0.5}}
               resizeMode="cover">
               <View style={styles.card}>
                 <Text style={styles.textPri}>{item.title}</Text>
@@ -59,6 +61,7 @@ const styles = new StyleSheet.create({
   },
   backImage: {
     margin: 10,
+    backgroundColor: Colors.color.fulldark,
   },
   card: {
     alignItems: 'center',
