@@ -63,7 +63,7 @@ const NewProduct = ({navigation}) => {
           resumedtitle,
           description,
           value,
-          mediaSrc: `${media}`,
+          media,
           datasheet: {
             systemType: systemtype,
             inverter: {
