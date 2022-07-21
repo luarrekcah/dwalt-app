@@ -32,12 +32,12 @@ const GenProjects = ({navigation}) => {
             <ImageBackground
               style={styles.backImage}
               source={{
-                uri: item.photos[0],
+                uri: item.media[0],
               }}
               resizeMode="cover">
               <View style={styles.card}>
                 <Text style={styles.textPri}>{item.title}</Text>
-                <Text style={styles.textSec}>{item.local}</Text>
+                <Text style={styles.textSec}>{item.coords}</Text>
               </View>
             </ImageBackground>
           </TouchableOpacity>
