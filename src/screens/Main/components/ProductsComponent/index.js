@@ -16,7 +16,7 @@ const Products = ({navigation}) => {
       .then(snapshot => {
         setDb(snapshot.val());
       });
-  }, []);
+  }, [db]);
 
   return (
     <View style={styles.container}>
