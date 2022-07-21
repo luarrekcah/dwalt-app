@@ -55,7 +55,8 @@ const styles = new StyleSheet.create({
     flex: 1,
   },
   card: {
-    margin: 20,
+    marginVertical: 10,
+    marginHorizontal: 20,
     padding: 20,
   },
   imgGerador: {
