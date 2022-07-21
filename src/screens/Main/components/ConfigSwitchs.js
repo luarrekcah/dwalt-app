@@ -19,6 +19,8 @@ const ConfigSwitchs = () => {
       console.log(snapshot.val());
       setIsSwitchCompComOn(snapshot.val().compsGeral);
       setIsSwitchManuOn(snapshot.val().modoManutencao);
+      setIsSwitchSimuBVOn(snapshot.val().simuladorBV);
+      setIsSwitchlojaOn(snapshot.val().loja);
     });
 
   return (
