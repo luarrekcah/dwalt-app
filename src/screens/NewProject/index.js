@@ -46,7 +46,7 @@ const NewProject = ({navigation}) => {
           projects = snapshot.val();
         }
         projects.push({
-          id: projects.length + title.replaceAll(' ', '-'),
+          id: title,
           title,
           desc,
           customer,
