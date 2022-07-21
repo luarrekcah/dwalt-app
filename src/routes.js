@@ -47,7 +47,7 @@ const Routes = () => {
         <Stack.Screen
           name="NewProject"
           component={NewProject}
-          options={{title: 'Gerenciar Projetos'}}
+          options={{title: 'Novo Projeto'}}
         />
         <Stack.Screen
           name="GenVagasStaff"
@@ -67,7 +67,7 @@ const Routes = () => {
         <Stack.Screen
           name="NewProduct"
           component={NewProduct}
-          options={{title: 'Adicionar um novo produto'}}
+          options={{title: 'Novo produto'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
