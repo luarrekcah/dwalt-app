@@ -26,7 +26,7 @@ const Products = ({navigation}) => {
           <Card style={styles.card}>
             <Card.Cover
               source={{
-                uri: item.mediaSrc[0],
+                uri: item.media[0],
               }}
             />
             <Text style={styles.title}>
