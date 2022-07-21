@@ -7,11 +7,6 @@ import Colors from '../../globalStyles/colors';
 import moment from 'moment';
 moment.locale('pt-br');
 import ImagePicker from 'react-native-image-crop-picker';
-import stripe from 'stripe';
-
-stripe(
-  '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',
-);
 
 const NewProduct = ({navigation}) => {
   let [code, setcode] = React.useState('');
@@ -53,12 +48,6 @@ const NewProduct = ({navigation}) => {
   const enviarDados = async () => {
     let products = [];
 
-    const stripeIdentifier = await stripe.products.create({
-      name: title,
-    });
-
-    console.log(stripeIdentifier);
-
     database()
       .ref('/dataWebSite/products')
       .once('value')
@@ -89,7 +78,7 @@ const NewProduct = ({navigation}) => {
             outputVoltage: outputvoltage,
           },
           paymentIdentifier: {
-            stripe: stripeIdentifier,
+            stripe: 'AAA',
           },
         });
 
