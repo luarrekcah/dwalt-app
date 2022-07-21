@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {List, TextInput, Button} from 'react-native-paper';
 import database from '@react-native-firebase/database';
@@ -7,7 +7,6 @@ import Colors from '../../globalStyles/colors';
 import {Picker} from '@react-native-picker/picker';
 
 const NewProject = ({navigation}) => {
-  let [id, setid] = React.useState('');
   let [title, settitle] = React.useState('');
   let [desc, setdesc] = React.useState('');
   let [customer, setcustomer] = React.useState('');
@@ -115,6 +114,7 @@ const NewProject = ({navigation}) => {
             onChangeText={newText => setobrafim(newText)}
           />
           <Picker
+            style={styles.picker}
             selectedValue={type}
             onValueChange={(itemValue, itemIndex) => settype(itemValue)}>
             <Picker.Item label="Tipo: Residencial" value="residencial" />
@@ -173,6 +173,9 @@ const styles = new StyleSheet.create({
     backgroundColor: 'green',
     width: '100%',
     margin: 10,
+  },
+  picker: {
+    color: Colors.color.fulldark,
   },
 });
 

@@ -140,12 +140,14 @@ const NewProduct = ({navigation}) => {
         </List.Section>
         <List.Section title="Informações Técnicas">
           <Picker
+            style={styles.picker}
             selectedValue={systemtype}
             onValueChange={(itemValue, itemIndex) => setsystemtype(itemValue)}>
             <Picker.Item label="Tipo de Sistema: Ongrid" value="Ongrid" />
             <Picker.Item label="Tipo de Sistema: Offgrid" value="Offgrid" />
           </Picker>
           <Picker
+            style={styles.picker}
             selectedValue={invertype}
             onValueChange={(itemValue, itemIndex) => setinvertype(itemValue)}>
             <Picker.Item label="Inversor: Growatt" value="Growatt" />
@@ -160,6 +162,7 @@ const NewProduct = ({navigation}) => {
             onChangeText={newText => setinverpower(newText)}
           />
           <Picker
+            style={styles.picker}
             selectedValue={brand}
             onValueChange={(itemValue, itemIndex) => setbrand(itemValue)}>
             <Picker.Item label="Módulo Solar: Jinko" value="Jinko" />
@@ -182,6 +185,7 @@ const NewProduct = ({navigation}) => {
             onChangeText={newText => setquantity(newText)}
           />
           <Picker
+            style={styles.picker}
             selectedValue={outputvoltage}
             onValueChange={(itemValue, itemIndex) =>
               setoutputvoltage(itemValue)
@@ -240,6 +244,9 @@ const styles = new StyleSheet.create({
     backgroundColor: 'green',
     width: '100%',
     margin: 10,
+  },
+  picker: {
+    color: Colors.color.fulldark,
   },
 });
 
