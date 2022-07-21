@@ -16,7 +16,7 @@ const Products = ({navigation}) => {
       .then(snapshot => {
         setDb(snapshot.val());
       });
-  }, [db]);
+  });
 
   return (
     <View style={styles.container}>
@@ -72,7 +72,7 @@ const styles = new StyleSheet.create({
   desc: {
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    color: 'black',
+    color: Colors.color.fulldark,
   },
   value: {
     color: 'red',
@@ -82,6 +82,7 @@ const styles = new StyleSheet.create({
   time: {
     textTransform: 'uppercase',
     fontSize: 12,
+    color: Colors.color.fulldark,
   },
   fab: {
     position: 'absolute',

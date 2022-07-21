@@ -21,7 +21,7 @@ const GenProjects = ({navigation}) => {
       .then(snapshot => {
         setDb(snapshot.val());
       });
-  }, []);
+  });
 
   return (
     <View style={styles.container}>
