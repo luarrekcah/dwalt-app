@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text, Switch, List, Snackbar} from 'react-native-paper';
 import database from '@react-native-firebase/database';
@@ -12,16 +12,18 @@ const ConfigSwitchs = () => {
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
 
-  database()
-    .ref('/switches')
-    .once('value')
-    .then(snapshot => {
-      console.log(snapshot.val());
-      setIsSwitchCompComOn(snapshot.val().compsGeral);
-      setIsSwitchManuOn(snapshot.val().modoManutencao);
-      setIsSwitchSimuBVOn(snapshot.val().simuladorBV);
-      setIsSwitchlojaOn(snapshot.val().loja);
-    });
+  useEffect(() => {
+    database()
+      .ref('/switches')
+      .once('value')
+      .then(snapshot => {
+        console.log(snapshot.val());
+        setIsSwitchCompComOn(snapshot.val().compsGeral);
+        setIsSwitchManuOn(snapshot.val().modoManutencao);
+        setIsSwitchSimuBVOn(snapshot.val().simuladorBV);
+        setIsSwitchlojaOn(snapshot.val().loja);
+      });
+  }, []);
 
   return (
     <View>

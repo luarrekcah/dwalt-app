@@ -53,9 +53,7 @@ const Home = ({navigation}) => {
         <List.Item
           title="Staff"
           description="Gerencie os dados de Staffs/Crachá Virtual"
-          left={() => (
-            <List.Icon color={Colors.color.primary} icon="account-multiple" />
-          )}
+          left={() => <List.Icon color={Colors.color.primary} icon="shield" />}
           onPress={() => {
             navigation.navigate('GenStaffs');
           }}
@@ -81,7 +79,9 @@ const Home = ({navigation}) => {
         <List.Item
           title="F.A.Q"
           description="Perguntas Frequentes"
-          left={() => <List.Icon color={Colors.color.primary} icon="faq" />}
+          left={() => (
+            <List.Icon color={Colors.color.primary} icon="clipboard-list" />
+          )}
           onPress={() => {
             navigation.navigate('');
           }}
@@ -89,7 +89,9 @@ const Home = ({navigation}) => {
         <List.Item
           title="Blog"
           description="Postagens no site"
-          left={() => <List.Icon color={Colors.color.primary} icon="faq" />}
+          left={() => (
+            <List.Icon color={Colors.color.primary} icon="newspaper" />
+          )}
           onPress={() => {
             navigation.navigate('');
           }}
