@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   FlatList,
+  RefreshControl,
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
@@ -13,6 +14,23 @@ import Colors from '../../globalStyles/colors';
 
 const GenProjects = ({navigation}) => {
   const [db, setDb] = React.useState({});
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    database()
+      .ref('/dataWebSite/projects')
+      .once('value')
+      .then(snapshot => {
+        setDb(snapshot.val());
+      });
+    console.log('projetos call');
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     database()
@@ -21,12 +39,16 @@ const GenProjects = ({navigation}) => {
       .then(snapshot => {
         setDb(snapshot.val());
       });
-  });
+    console.log('projetos call');
+  }, []);
 
   return (
     <View style={styles.container}>
       <FlatList
         data={db}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         renderItem={({item}) => (
           <TouchableOpacity>
             <ImageBackground

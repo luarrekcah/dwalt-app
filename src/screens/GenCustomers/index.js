@@ -14,6 +14,7 @@ const GenCustomers = ({navigation}) => {
       .then(snapshot => {
         setDb(snapshot.val());
       });
+    console.log('clientes call');
   }, []);
 
   return (

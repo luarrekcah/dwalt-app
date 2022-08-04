@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {View, FlatList, Text, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  RefreshControl,
+  FlatList,
+  Text,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import {Card, FAB} from 'react-native-paper';
 import Colors from '../../../../globalStyles/colors';
 import database from '@react-native-firebase/database';
@@ -8,6 +15,22 @@ moment.locale('pt-br');
 
 const Products = ({navigation}) => {
   const [db, setDb] = React.useState({});
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    database()
+      .ref('/dataWebSite/products')
+      .once('value')
+      .then(snapshot => {
+        setDb(snapshot.val());
+      });
+    console.log('products call');
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     database()
@@ -16,12 +39,16 @@ const Products = ({navigation}) => {
       .then(snapshot => {
         setDb(snapshot.val());
       });
-  });
+    console.log('products call');
+  }, []);
 
   return (
     <View style={styles.container}>
       <FlatList
         data={db}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         renderItem={({item}) => (
           <Card style={styles.card}>
             <Card.Cover

@@ -23,6 +23,7 @@ const ConfigSwitchs = () => {
         setIsSwitchSimuBVOn(snapshot.val().simuladorBV);
         setIsSwitchlojaOn(snapshot.val().loja);
       });
+    console.log('config switchs call');
   }, []);
 
   return (
