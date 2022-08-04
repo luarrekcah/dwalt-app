@@ -73,7 +73,7 @@ const Home = ({navigation}) => {
           description="Serviços e Descrições"
           left={() => <List.Icon color={Colors.color.primary} icon="tools" />}
           onPress={() => {
-            navigation.navigate('');
+            navigation.navigate('Services');
           }}
         />
         <List.Item
@@ -83,7 +83,7 @@ const Home = ({navigation}) => {
             <List.Icon color={Colors.color.primary} icon="clipboard-list" />
           )}
           onPress={() => {
-            navigation.navigate('');
+            navigation.navigate('Faq');
           }}
         />
         <List.Item
@@ -93,7 +93,7 @@ const Home = ({navigation}) => {
             <List.Icon color={Colors.color.primary} icon="newspaper" />
           )}
           onPress={() => {
-            navigation.navigate('');
+            navigation.navigate('Blog');
           }}
         />
         <ConfigSwitchs />

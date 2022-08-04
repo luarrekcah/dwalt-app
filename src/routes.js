@@ -12,6 +12,9 @@ import GenStaffs from './screens/GenStaffs';
 import GenCustomers from './screens/GenCustomers';
 import NewProduct from './screens/NewProduct';
 import NewProject from './screens/NewProject';
+import Faq from './screens/Faq';
+import Blog from './screens/Blog';
+import Services from './screens/Services';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,6 +71,21 @@ const Routes = () => {
           name="NewProduct"
           component={NewProduct}
           options={{title: 'Novo produto'}}
+        />
+        <Stack.Screen
+          name="Faq"
+          component={Faq}
+          options={{title: 'Perguntas Frequentes'}}
+        />
+        <Stack.Screen
+          name="Blog"
+          component={Blog}
+          options={{title: 'Blog - Postagens'}}
+        />
+        <Stack.Screen
+          name="Services"
+          component={Services}
+          options={{title: 'Especialidades'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
