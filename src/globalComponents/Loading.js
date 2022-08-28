@@ -47,6 +47,36 @@ const Loading = () => {
         secondaryColor="lightgray"
         duration={5000}
       />
+      <FadeLoading
+        style={styles.card}
+        primaryColor="gray"
+        secondaryColor="lightgray"
+        duration={5000}
+      />
+      <FadeLoading
+        style={styles.title}
+        primaryColor="gray"
+        secondaryColor="lightgray"
+        duration={5000}
+      />
+      <FadeLoading
+        style={styles.card}
+        primaryColor="gray"
+        secondaryColor="lightgray"
+        duration={5000}
+      />
+      <FadeLoading
+        style={styles.title}
+        primaryColor="gray"
+        secondaryColor="lightgray"
+        duration={5000}
+      />
+      <FadeLoading
+        style={styles.card}
+        primaryColor="gray"
+        secondaryColor="lightgray"
+        duration={5000}
+      />
     </View>
   );
 };
