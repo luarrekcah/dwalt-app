@@ -1,16 +1,19 @@
 import React, {useEffect} from 'react';
 import {
   View,
+  Image,
   ScrollView,
   FlatList,
   TouchableOpacity,
   ImageBackground,
   Text,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import {List, TextInput, Button} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import Colors from '../../globalStyles/colors';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const InfosSite = () => {
   const [db, setDb] = React.useState({});
@@ -21,6 +24,18 @@ const InfosSite = () => {
   const [telefonedois, settelefonedois] = React.useState('');
   const [whatsapp, setwhatsapp] = React.useState('');
   const [atualizado, setAtualizado] = React.useState(false);
+  const [bannerPromo, setBannerPromo] = React.useState('');
+
+  const pickImages = () => {
+    ImagePicker.openPicker({
+      includeBase64: true,
+      width: 1920,
+      height: 88,
+      multiple: false,
+    }).then(image => {
+      setBannerPromo('data:image/png;base64,' + image.data);
+    });
+  };
 
   useEffect(() => {
     database()
@@ -41,6 +56,7 @@ const InfosSite = () => {
         telefone: telefoneum,
         telefoneTwo: telefonedois,
         whatsapp,
+        bannerPromo,
       })
       .then(() => setAtualizado(true));
   };
@@ -53,12 +69,25 @@ const InfosSite = () => {
       settelefoneum(db.infos.telefone);
       settelefonedois(db.infos.telefoneTwo);
       setwhatsapp(db.infos.whatsapp);
+      setBannerPromo(db.infos.bannerPromo || '');
     }
   }, [db]);
 
   return (
     <View style={styles.container}>
       <ScrollView>
+        <List.Subheader>Banner Promocional (Imagem cortada)</List.Subheader>
+        <TouchableOpacity
+          onPress={() => {
+            pickImages();
+          }}>
+          <Image
+            style={styles.bannerPromo}
+            source={{
+              uri: bannerPromo || '',
+            }}
+          />
+        </TouchableOpacity>
         <List.Subheader>Banners Iniciais</List.Subheader>
         <FlatList
           horizontal={true}
@@ -136,6 +165,11 @@ const InfosSite = () => {
 
 const styles = new StyleSheet.create({
   container: {},
+  bannerPromo: {
+    height: 88,
+    width: Dimensions.get('window').width,
+    //resizeMode: 'stretch',
+  },
   imageHeader: {
     margin: 10,
     borderRadius: 30,
