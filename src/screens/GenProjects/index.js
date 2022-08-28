@@ -11,10 +11,13 @@ import {
 import database from '@react-native-firebase/database';
 import {FAB} from 'react-native-paper';
 import Colors from '../../globalStyles/colors';
+import Loading from '../../globalComponents/Loading';
 
 const GenProjects = ({navigation}) => {
   const [db, setDb] = React.useState({});
   const [refreshing, setRefreshing] = React.useState(false);
+
+  const [loaded, setLoaded] = React.useState(false);
 
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -22,6 +25,7 @@ const GenProjects = ({navigation}) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    setLoaded(false);
     database()
       .ref('/dataWebSite/projects')
       .once('value')
@@ -29,7 +33,10 @@ const GenProjects = ({navigation}) => {
         setDb(snapshot.val());
       });
     console.log('projetos call');
-    wait(2000).then(() => setRefreshing(false));
+    wait(2000).then(() => {
+      setRefreshing(false);
+      setLoaded(true);
+    });
   }, []);
 
   useEffect(() => {
@@ -38,40 +45,46 @@ const GenProjects = ({navigation}) => {
       .once('value')
       .then(snapshot => {
         setDb(snapshot.val());
+        setLoaded(true);
       });
-    console.log('projetos call');
   }, []);
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={db}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        renderItem={({item}) => (
-          <TouchableOpacity>
-            <ImageBackground
-              style={styles.backImage}
-              source={{
-                uri: item.media[0],
-              }}
-              // eslint-disable-next-line react-native/no-inline-styles
-              imageStyle={{opacity: 0.5}}
-              resizeMode="cover">
-              <View style={styles.card}>
-                <Text style={styles.textPri}>{item.title}</Text>
-                <Text style={styles.textSec}>{item.coords}</Text>
-              </View>
-            </ImageBackground>
-          </TouchableOpacity>
-        )}
-      />
-      <FAB
-        icon="plus"
-        style={styles.fab}
-        onPress={() => navigation.navigate('NewProject')}
-      />
+      {loaded === false ? (
+        <Loading />
+      ) : (
+        <>
+          <FlatList
+            data={db}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            renderItem={({item}) => (
+              <TouchableOpacity>
+                <ImageBackground
+                  style={styles.backImage}
+                  source={{
+                    uri: item.media[0],
+                  }}
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  imageStyle={{opacity: 0.5}}
+                  resizeMode="cover">
+                  <View style={styles.card}>
+                    <Text style={styles.textPri}>{item.title}</Text>
+                    <Text style={styles.textSec}>{item.coords}</Text>
+                  </View>
+                </ImageBackground>
+              </TouchableOpacity>
+            )}
+          />
+          <FAB
+            icon="plus"
+            style={styles.fab}
+            onPress={() => navigation.navigate('NewProject')}
+          />
+        </>
+      )}
     </View>
   );
 };
