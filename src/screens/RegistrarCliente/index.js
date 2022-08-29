@@ -13,6 +13,7 @@ import {TextInput, Checkbox, Text, Button} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import Geolocation from 'react-native-geolocation-service';
 import Colors from '../../globalStyles/colors';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const RegistrarCliente = ({navigation}) => {
   const [forceLocation, setForceLocation] = React.useState(true);
@@ -20,6 +21,8 @@ const RegistrarCliente = ({navigation}) => {
   const [locationDialog, setLocationDialog] = React.useState(true);
   const [useLocationManager, setUseLocationManager] = React.useState(false);
   const [location, setLocation] = React.useState(null);
+
+  let [media, setmedia] = React.useState([]);
 
   const [cod, setCod] = React.useState('');
   const [nome, setNome] = React.useState('');
@@ -113,6 +116,21 @@ const RegistrarCliente = ({navigation}) => {
     );
   };
 
+  const pickImages = () => {
+    ImagePicker.openPicker({
+      includeBase64: true,
+      width: 400,
+      height: 400,
+      multiple: true,
+    }).then(images => {
+      let base64Imgs = [];
+      images.forEach((item, i) => {
+        base64Imgs.push('data:image/png;base64,' + item.data);
+      });
+      setmedia(base64Imgs);
+    });
+  };
+
   const checkSexo = () => {
     if (sexoM) {
       return 'Masculino';
@@ -157,6 +175,7 @@ const RegistrarCliente = ({navigation}) => {
           renda,
           endereco,
           location,
+          media,
         });
 
         database()
@@ -299,13 +318,23 @@ const RegistrarCliente = ({navigation}) => {
           onChangeText={newText => setEndereco(newText)}
         />
         <View style={styles.buttonsGroup}>
-          <Button
-            style={styles.button}
-            icon="camera"
-            mode="contained"
-            onPress={() => console.log('Pressed')}>
-            Adicionar Fotos (NÃO FUNCIONAL)
-          </Button>
+          {media.length !== 0 ? (
+            <Button
+              style={styles.sucessButton}
+              icon="camera"
+              mode="contained"
+              onPress={() => pickImages()}>
+              ({media.length}) Fotos Adicionadas
+            </Button>
+          ) : (
+            <Button
+              style={styles.button}
+              icon="camera"
+              mode="contained"
+              onPress={() => pickImages()}>
+              Adicionar Fotos
+            </Button>
+          )}
           {location === null ? (
             <Button
               style={styles.button}
