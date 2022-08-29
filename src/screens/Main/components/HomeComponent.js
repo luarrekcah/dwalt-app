@@ -8,20 +8,15 @@ import Colors from '../../../globalStyles/colors';
 const Home = ({navigation}) => {
   return (
     <ScrollView>
-      <List.Section title="Pasta de Dados">
-        <List.Accordion
-          title="Utilitários"
-          left={() => <List.Icon color={Colors.color.primary} icon="tools" />}>
-          <List.Item
-            onPress={() => navigation.navigate('RegistrarCliente')}
-            title="Registrar Cliente"
-          />
-          <List.Item
-            onPress={() => navigation.navigate('BancoDados')}
-            title="Banco de Dados"
-          />
-        </List.Accordion>
-        <List.Subheader>Outras Configurações</List.Subheader>
+      <List.Section title="Ferramentas">
+        <List.Item
+          title="Registrar Cliente"
+          description="Todas as informações necessárias para os procedimentos da homologação"
+          left={() => <List.Icon color={Colors.color.primary} icon="tools" />}
+          onPress={() => navigation.navigate('RegistrarCliente')}
+        />
+      </List.Section>
+      <List.Section title="Administração do site">
         <List.Item
           title="Informações Gerais do Site"
           description="Gerencie dados de contato e outras informações"
