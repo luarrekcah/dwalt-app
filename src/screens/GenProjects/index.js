@@ -92,6 +92,9 @@ const GenProjects = ({navigation}) => {
                   <Text style={[styles.textPri, {color: '#000000'}]}>
                     {modalProject === null ? '' : modalProject.title}
                   </Text>
+                  <Text style={{color: '#000000', margin: 20, fontSize: 15}}>
+                    Deseja deletar o projeto?
+                  </Text>
                   <Button
                     style={styles.deletButton}
                     icon="delete"
@@ -166,6 +169,7 @@ const styles = new StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: Colors.color.primary,
+    flex: 1,
   },
   deletButton: {
     backgroundColor: 'red',

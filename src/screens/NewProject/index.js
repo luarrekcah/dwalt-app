@@ -5,6 +5,7 @@ import database from '@react-native-firebase/database';
 import ImagePicker from 'react-native-image-crop-picker';
 import Colors from '../../globalStyles/colors';
 import {Picker} from '@react-native-picker/picker';
+import AlertModal from '../../globalComponents/AlertModal';
 
 const NewProject = ({navigation}) => {
   let [title, settitle] = React.useState('');
@@ -13,12 +14,11 @@ const NewProject = ({navigation}) => {
   let [coords, setcoords] = React.useState('');
   let [obrainit, setobrainit] = React.useState('');
   let [obrafim, setobrafim] = React.useState('');
-
   let [type, settype] = React.useState();
-
   let [media, setmedia] = React.useState([]);
-
   const [enviado, setEnviado] = React.useState(false);
+  const [modal, setModal] = React.useState(false);
+  const [modalData, setModalData] = React.useState(null);
 
   const pickImages = () => {
     ImagePicker.openPicker({
@@ -37,35 +37,61 @@ const NewProject = ({navigation}) => {
 
   const enviarDados = () => {
     let projects = [];
-    database()
-      .ref('/dataWebSite/projects')
-      .once('value')
-      .then(snapshot => {
-        if (snapshot.val() !== null) {
-          projects = snapshot.val();
-        }
-        projects.push({
-          id: title,
-          title,
-          desc,
-          customer,
-          coords,
-          date: {
-            initial: obrainit,
-            end: obrafim,
-          },
-          type,
-          media,
-        });
-
-        database()
-          .ref('/dataWebSite/projects')
-          .set(projects)
-          .then(() => {
-            setEnviado(true);
-            navigation.goBack();
-          });
+    if (title === '' || media.length === 0) {
+      setModalData({
+        title: 'Alguns campos obrigatórios estão faltando!',
+        icon: 'warning',
+        description: 'Lembre-se de prover todas as informações',
+        loading: false,
       });
+      setModal(true);
+      return;
+    } else {
+      setModalData({
+        title: 'Enviando seu projeto...',
+        description: 'Estamos atualizando o banco de dados',
+        icon: 'warning',
+        loading: true,
+      });
+      setModal(true);
+      database()
+        .ref('/dataWebSite/projects')
+        .once('value')
+        .then(snapshot => {
+          if (snapshot.val() !== null) {
+            projects = snapshot.val();
+          }
+          projects.push({
+            id: title,
+            title,
+            desc,
+            customer,
+            coords,
+            date: {
+              initial: obrainit,
+              end: obrafim,
+            },
+            type,
+            media,
+          });
+
+          database()
+            .ref('/dataWebSite/projects')
+            .set(projects)
+            .then(() => {
+              setModalData({
+                title: 'Projeto Enviado!',
+                description: 'Você será redirecionado em instantes...',
+                icon: 'checkmark-circle',
+                loading: false,
+              });
+              setEnviado(true);
+              setTimeout(() => {
+                navigation.goBack();
+              }, 5000);
+            });
+        });
+    }
   };
 
   return (
@@ -152,6 +178,13 @@ const NewProject = ({navigation}) => {
             </Button>
           )}
         </List.Section>
+        <AlertModal
+          visible={modal}
+          data={modalData}
+          onClose={() => {
+            setModal(false);
+          }}
+        />
       </ScrollView>
     </View>
   );
