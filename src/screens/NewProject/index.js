@@ -37,7 +37,7 @@ const NewProject = ({navigation}) => {
 
   const enviarDados = () => {
     let projects = [];
-    if (title === '' || media.length === 0) {
+    if (title === '' || media.length === 0 || coords === '') {
       setModalData({
         title: 'Alguns campos obrigatórios estão faltando!',
         icon: 'warning',
