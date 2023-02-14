@@ -1325,6 +1325,11 @@
   resolved "https://registry.npmjs.org/@react-native-firebase/database/-/database-15.1.1.tgz"
   integrity sha512-6JoKNfOc5q4DRimctCFqriihpjpW66v6mGeLvVFQT7omROsdFmq5KZBlkWxHr4F7xL/4Z0VR/ugQfQkgJBCvDQ==
 
+"@react-native-firebase/storage@^17.1.0":
+  version "17.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-17.1.0.tgz#ec259e145242b6d73cbdcdcdc9e28e9b92630170"
+  integrity sha512-aj16L1rhIUed5ZEgp1bi7yB9Bh5v5P35YYELGG7vDePtciWm6L5ss574wYgjCgMV0hrAwm8o2DvpJ6rMlO47Kg==
+
 "@react-native-picker/picker@^2.4.2":
   version "2.4.3"
   resolved "https://registry.npmjs.org/@react-native-picker/picker/-/picker-2.4.3.tgz"

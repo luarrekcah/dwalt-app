@@ -4,7 +4,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeComponent from './components/HomeComponent';
 import ProductsComponent from './components/ProductsComponent';
-import BankComponent from './components/BankComponent';
 
 import Colors from '../../globalStyles/colors';
 
@@ -22,8 +21,6 @@ const Main = ({navigation}) => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Produtos') {
             iconName = focused ? 'cart' : 'cart-outline';
-          } else if (route.name === 'Banco') {
-            iconName = focused ? 'cash' : 'cash-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -31,9 +28,8 @@ const Main = ({navigation}) => {
         tabBarInactiveTintColor: 'gray',
       })}
       initialRouteName="Home">
-      <Tab.Screen name="Produtos" component={ProductsComponent} />
       <Tab.Screen name="Home" component={HomeComponent} />
-      <Tab.Screen name="Banco" component={BankComponent} />
+      <Tab.Screen name="Produtos" component={ProductsComponent} />
     </Tab.Navigator>
   );
 };

@@ -9,13 +9,13 @@ import {
   ImageBackground,
   Modal,
 } from 'react-native';
-import database from '@react-native-firebase/database';
 import {Button, FAB} from 'react-native-paper';
 import Colors from '../../globalStyles/colors';
 import Loading from '../../globalComponents/Loading';
+import {deleteItem, getAllItems} from '../../services/Database';
 
 const GenProjects = ({navigation}) => {
-  const [db, setDb] = React.useState({});
+  const [db, setDb] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [modalProject, setModalProject] = React.useState(null);
@@ -26,12 +26,11 @@ const GenProjects = ({navigation}) => {
   };
 
   const setData = () => {
-    database()
-      .ref('/dataWebSite/projects')
-      .once('value')
-      .then(snapshot => {
-        setDb(snapshot.val());
-      });
+    getAllItems({path: 'dlwalt/projects'}).then(data => {
+      console.log(data);
+      setDb(data);
+      setLoaded(true);
+    });
   };
 
   const onRefresh = React.useCallback(() => {
@@ -46,31 +45,16 @@ const GenProjects = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    database()
-      .ref('/dataWebSite/projects')
-      .once('value')
-      .then(snapshot => {
-        setDb(snapshot.val());
-        setLoaded(true);
-      });
-  }, []);
+    setData();
+  }, [navigation]);
 
   const onDelete = id => {
-    const newProjects = db.filter(item => {
-      if (item.id === id) {
-        return;
-      }
-      return item;
-    });
-    setModalVisible(false);
+    setModalVisible(true);
     setLoaded(false);
-    database()
-      .ref('/dataWebSite/projects')
-      .set(newProjects)
-      .then(() => {
-        setDb(newProjects);
-        setLoaded(true);
-      });
+    deleteItem({path: `dlwalt/projects/${id}`});
+    setData();
+    setModalVisible(false);
+    setLoaded(true);
   };
 
   return (
@@ -90,7 +74,7 @@ const GenProjects = ({navigation}) => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={[styles.textPri, {color: '#000000'}]}>
-                    {modalProject === null ? '' : modalProject.title}
+                    {modalProject === null ? '' : modalProject.data.title}
                   </Text>
                   <Text style={{color: '#000000', margin: 20, fontSize: 15}}>
                     Deseja deletar o projeto?
@@ -99,7 +83,7 @@ const GenProjects = ({navigation}) => {
                     style={styles.deletButton}
                     icon="delete"
                     mode="contained"
-                    onPress={() => onDelete(modalProject.id)}>
+                    onPress={() => onDelete(modalProject.key)}>
                     Deletar Projeto
                   </Button>
                 </View>
@@ -120,26 +104,26 @@ const GenProjects = ({navigation}) => {
                 <ImageBackground
                   style={styles.backImage}
                   source={{
-                    uri: item.media[0],
+                    uri: item.data.media[0],
                   }}
                   // eslint-disable-next-line react-native/no-inline-styles
                   imageStyle={{opacity: 0.5}}
                   resizeMode="cover">
                   <View style={styles.card}>
-                    <Text style={styles.textPri}>{item.title}</Text>
-                    <Text style={styles.textSec}>{item.coords}</Text>
+                    <Text style={styles.textPri}>{item.data.title}</Text>
+                    <Text style={styles.textSec}>{item.data.coords}</Text>
                   </View>
                 </ImageBackground>
               </TouchableOpacity>
             )}
           />
-          <FAB
-            icon="plus"
-            style={styles.fab}
-            onPress={() => navigation.navigate('NewProject')}
-          />
         </View>
       )}
+      <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={() => navigation.navigate('NewProject')}
+      />
     </View>
   );
 };

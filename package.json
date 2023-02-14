@@ -14,6 +14,7 @@
     "@react-native-community/cli": "^8.0.3",
     "@react-native-firebase/app": "^15.1.1",
     "@react-native-firebase/database": "^15.1.1",
+    "@react-native-firebase/storage": "^17.1.0",
     "@react-native-picker/picker": "^2.4.2",
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.11",

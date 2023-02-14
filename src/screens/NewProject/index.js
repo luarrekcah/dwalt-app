@@ -1,11 +1,12 @@
 import React from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet, ToastAndroid} from 'react-native';
 import {List, TextInput, Button} from 'react-native-paper';
-import database from '@react-native-firebase/database';
+import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import Colors from '../../globalStyles/colors';
 import {Picker} from '@react-native-picker/picker';
 import AlertModal from '../../globalComponents/AlertModal';
+import {setItem} from '../../services/Database';
 
 const NewProject = ({navigation}) => {
   let [title, settitle] = React.useState('');
@@ -14,29 +15,58 @@ const NewProject = ({navigation}) => {
   let [coords, setcoords] = React.useState('');
   let [obrainit, setobrainit] = React.useState('');
   let [obrafim, setobrafim] = React.useState('');
-  let [type, settype] = React.useState();
+  let [type, settype] = React.useState('residencial');
   let [media, setmedia] = React.useState([]);
   const [enviado, setEnviado] = React.useState(false);
   const [modal, setModal] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
 
+  function id(str) {
+    // Converte a string para minúsculas
+    str = str.toLowerCase();
+
+    // Substitui espaços por hífens
+    str = str.replace(/\s+/g, '-');
+
+    return str;
+  }
+
   const pickImages = () => {
+    if (title === '') {
+      return ToastAndroid.show(
+        'Dê um nome primeiro ao projeto!',
+        ToastAndroid.SHORT,
+      );
+    }
     ImagePicker.openPicker({
       includeBase64: true,
-      width: 400,
-      height: 400,
-      multiple: true,
-    }).then(images => {
-      let base64Imgs = [];
-      images.forEach((item, i) => {
-        base64Imgs.push('data:image/png;base64,' + item.data);
+      width: 800,
+      height: 800,
+      mediaType: 'photo',
+      cropping: true,
+    }).then(async images => {
+      let base64Imgs = media;
+      setModalData({
+        title: 'Enviando sua imagem',
+        description: 'Aguarde...',
+        icon: 'warning',
+        loading: true,
       });
+      setModal(true);
+      const path = `dlwalt/projects/${id(
+        title,
+      )}/photos/${new Date().getTime()}-${base64Imgs.length}-${id(title)}.jpg`;
+      const reference = storage().ref(path);
+      const dataUrl = `data:image/png;base64,${images.data}`;
+      await reference.putString(dataUrl, 'data_url');
+      const url = await reference.getDownloadURL();
+      base64Imgs.push(url);
       setmedia(base64Imgs);
+      setModal(false);
     });
   };
 
   const enviarDados = () => {
-    let projects = [];
     if (title === '' || media.length === 0 || coords === '') {
       setModalData({
         title: 'Alguns campos obrigatórios estão faltando!',
@@ -54,43 +84,26 @@ const NewProject = ({navigation}) => {
         loading: true,
       });
       setModal(true);
-      database()
-        .ref('/dataWebSite/projects')
-        .once('value')
-        .then(snapshot => {
-          if (snapshot.val() !== null) {
-            projects = snapshot.val();
-          }
-          projects.push({
-            id: title,
-            title,
-            desc,
-            customer,
-            coords,
-            date: {
-              initial: obrainit,
-              end: obrafim,
-            },
-            type,
-            media,
-          });
-
-          database()
-            .ref('/dataWebSite/projects')
-            .set(projects)
-            .then(() => {
-              setModalData({
-                title: 'Projeto Enviado!',
-                description: 'Você será redirecionado em instantes...',
-                icon: 'checkmark-circle',
-                loading: false,
-              });
-              setEnviado(true);
-              setTimeout(() => {
-                navigation.goBack();
-              }, 5000);
-            });
-        });
+      setItem({
+        path: `dlwalt/projects/${id(title)}`,
+        params: {
+          id: title,
+          title,
+          desc,
+          customer,
+          coords,
+          date: {
+            initial: obrainit,
+            end: obrafim,
+          },
+          type,
+          media,
+        },
+      });
+      setEnviado(true);
+      setTimeout(() => {
+        navigation.goBack();
+      }, 2000);
     }
   };
 
