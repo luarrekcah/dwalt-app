@@ -49,7 +49,8 @@ const Home = ({navigation}) => {
             navigation.navigate('Faq');
           }}
         />
-        <List.Item
+        {/**
+         * <List.Item
           title="Blog"
           description="Postagens no site"
           left={() => (
@@ -59,6 +60,7 @@ const Home = ({navigation}) => {
             navigation.navigate('Blog');
           }}
         />
+         */}
       </List.Section>
     </ScrollView>
   );
