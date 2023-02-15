@@ -7,6 +7,7 @@ import Colors from '../../globalStyles/colors';
 import {Picker} from '@react-native-picker/picker';
 import AlertModal from '../../globalComponents/AlertModal';
 import {setItem} from '../../services/Database';
+import unidecode from 'unidecode';
 
 const NewProject = ({navigation}) => {
   let [title, settitle] = React.useState('');
@@ -22,11 +23,11 @@ const NewProject = ({navigation}) => {
   const [modalData, setModalData] = React.useState(null);
 
   function id(str) {
-    // Converte a string para minúsculas
-    str = str.toLowerCase();
+    // Converte a string para minúsculas, remove acentuação e espaços em branco
+    str = unidecode(str).toLowerCase().replace(/\s+/g, '-');
 
-    // Substitui espaços por hífens
-    str = str.replace(/\s+/g, '-');
+    // Remove todos os caracteres não alfanuméricos
+    str = str.replace(/[^a-z0-9]+/g, '-');
 
     return str;
   }

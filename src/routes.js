@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Main from './screens/Main';
-import BancoDados from './screens/BancoDados';
 import GenProjects from './screens/GenProjects';
 import GenVagasStaff from './screens/GenVagasStaff';
 import GenStaffs from './screens/GenStaffs';

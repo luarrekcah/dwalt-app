@@ -28,7 +28,8 @@ const Home = ({navigation}) => {
             navigation.navigate('GenVagasStaff');
           }}
         />
-        <List.Item
+        {/**
+           <List.Item
           title="Serviços"
           description="Serviços e Descrições"
           left={() => <List.Icon color={Colors.color.primary} icon="tools" />}
@@ -36,6 +37,8 @@ const Home = ({navigation}) => {
             navigation.navigate('Services');
           }}
         />
+         */}
+
         <List.Item
           title="F.A.Q"
           description="Perguntas Frequentes"

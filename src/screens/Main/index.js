@@ -29,7 +29,7 @@ const Main = ({navigation}) => {
       })}
       initialRouteName="Home">
       <Tab.Screen name="Home" component={HomeComponent} />
-      <Tab.Screen name="Produtos" component={ProductsComponent} />
+      {/*<Tab.Screen name="Produtos" component={ProductsComponent} />*/}
     </Tab.Navigator>
   );
 };
