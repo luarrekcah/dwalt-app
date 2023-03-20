@@ -7,7 +7,17 @@ import Colors from '../../../globalStyles/colors';
 const Home = ({navigation}) => {
   return (
     <ScrollView>
-      <List.Section title="Administração do site">
+      <List.Section title="Ferramentas">
+        <List.Item
+          title="Gerar Proposta"
+          description="Gere propostas com base no modelo desenvolvido."
+          left={() => <List.Icon color={Colors.color.primary} icon="tools" />}
+          onPress={() => {
+            navigation.navigate('GenProposal');
+          }}
+        />
+      </List.Section>
+      <List.Section title="D | Walt Engenharia">
         <List.Item
           title="Projetos"
           description="Gerencie os Projetos à amostra no site"
@@ -62,6 +72,18 @@ const Home = ({navigation}) => {
         />
          */}
       </List.Section>
+      {/*
+      <List.Section title="D | Walt Connect">
+        <List.Item
+          title="Emitir notificação"
+          description="Notificações para empresas."
+          left={() => <List.Icon color={Colors.color.primary} icon="send" />}
+          onPress={() => {
+            navigation.navigate('GenProposal');
+          }}
+        />
+      </List.Section>
+       */}
     </ScrollView>
   );
 };
