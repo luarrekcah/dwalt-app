@@ -11,7 +11,6 @@ import NewProject from './screens/NewProject';
 import Faq from './screens/Faq';
 import Blog from './screens/Blog';
 import Services from './screens/Services';
-import GenProposal from './screens/GenProposal';
 
 const Stack = createNativeStackNavigator();
 
@@ -63,11 +62,6 @@ const Routes = () => {
           name="Services"
           component={Services}
           options={{title: 'Especialidades'}}
-        />
-        <Stack.Screen
-          name="GenProposal"
-          component={GenProposal}
-          options={{title: 'Gerar Proposta'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

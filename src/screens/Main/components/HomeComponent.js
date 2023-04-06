@@ -7,16 +7,6 @@ import Colors from '../../../globalStyles/colors';
 const Home = ({navigation}) => {
   return (
     <ScrollView>
-      <List.Section title="Ferramentas">
-        <List.Item
-          title="Gerar Proposta"
-          description="Gere propostas com base no modelo desenvolvido."
-          left={() => <List.Icon color={Colors.color.primary} icon="tools" />}
-          onPress={() => {
-            navigation.navigate('GenProposal');
-          }}
-        />
-      </List.Section>
       <List.Section title="D | Walt Engenharia">
         <List.Item
           title="Projetos"
