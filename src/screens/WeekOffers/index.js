@@ -13,7 +13,7 @@ import Colors from '../../globalStyles/colors';
 import {getItems, setItem} from '../../services/Database';
 
 const WeekOffers = ({navigation}) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,6 +44,32 @@ const WeekOffers = ({navigation}) => {
     return (
       <View>
         <Text>Carregando...</Text>
+      </View>
+    );
+  }
+
+  if (data === null || data === undefined || !data || data.length === 0) {
+    return (
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            margin: 40,
+          }}>
+          <Text style={{color: '#000000'}}>SEM PRODUTOS NO BANCO DE DADOS</Text>
+        </View>
+        <FAB
+          icon="plus"
+          style={styles.fab}
+          onPress={() => {
+            navigation.navigate('NewProduct', {
+              isEdit: false,
+              data: {},
+            });
+          }}
+        />
       </View>
     );
   }
