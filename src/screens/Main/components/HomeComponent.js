@@ -49,6 +49,15 @@ const Home = ({navigation}) => {
             navigation.navigate('Faq');
           }}
         />
+
+        <List.Item
+          title="Produtos"
+          description="Ofertas da semana"
+          left={() => <List.Icon color={Colors.color.primary} icon="cart" />}
+          onPress={() => {
+            navigation.navigate('WeekOffers');
+          }}
+        />
         {/**
          * <List.Item
           title="Blog"

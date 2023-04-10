@@ -11,6 +11,7 @@ import NewProject from './screens/NewProject';
 import Faq from './screens/Faq';
 import Blog from './screens/Blog';
 import Services from './screens/Services';
+import WeekOffers from './screens/WeekOffers';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,11 @@ const Routes = () => {
           name="Services"
           component={Services}
           options={{title: 'Especialidades'}}
+        />
+        <Stack.Screen
+          name="WeekOffers"
+          component={WeekOffers}
+          options={{title: 'Ofertas'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
