@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import DraggableFlatList, {
@@ -10,42 +10,34 @@ import {FAB} from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../../globalStyles/colors';
+import {getItems, setItem} from '../../services/Database';
 
 const WeekOffers = ({navigation}) => {
-  const [data, setData] = useState([
-    {
-      id: '1',
-      img: 'https://www.aldo.com.br/cdn-cgi/image/fit=contain,format=auto,metadata=none,onerror=redirect,quality=70,width=2560/OldSite/images/196480_100223171143.jpg',
-      title: 'Kit Gerador 400kW',
-      description: 'desc',
-      value: '14.999,90',
-    },
-    {
-      id: '2',
-      img: 'https://www.aldo.com.br/cdn-cgi/image/fit=contain,format=auto,metadata=none,onerror=redirect,quality=70,width=2560/OldSite/images/196480_100223171143.jpg',
-      title: 'Produto 2',
-      description: 'desc',
-      value: '14.999,90',
-    },
-    {
-      id: '3',
-      img: 'https://www.aldo.com.br/cdn-cgi/image/fit=contain,format=auto,metadata=none,onerror=redirect,quality=70,width=2560/OldSite/images/196480_100223171143.jpg',
-      title: 'Produto 3',
-      description: 'desc',
-      value: '14.999,90',
-    },
-    {
-      id: '4',
-      img: 'https://www.aldo.com.br/cdn-cgi/image/fit=contain,format=auto,metadata=none,onerror=redirect,quality=70,width=2560/OldSite/images/196480_100223171143.jpg',
-      title: 'Produto 4',
-      description: 'desc',
-      value: '14.999,90',
-    },
-  ]);
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getItems({path: 'dlwalt/offers'}).then(res => {
+      setData(res);
+      setLoading(false);
+    });
+  }, []);
 
   const updateDataPosition = dataList => {
     setData(dataList);
+    setItem({
+      path: 'dlwalt/offers',
+      params: dataList,
+    });
   };
+
+  if (loading) {
+    return (
+      <View>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -84,7 +76,7 @@ const WeekOffers = ({navigation}) => {
                         height: 50,
                       }}
                       source={{
-                        uri: item.img,
+                        uri: item.banner,
                       }}
                     />
                     <Text style={{fontSize: 20, color: '#000000'}}>

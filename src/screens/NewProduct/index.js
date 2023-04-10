@@ -1,101 +1,120 @@
 import React from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {List, TextInput, Button} from 'react-native-paper';
-import database from '@react-native-firebase/database';
-import {Picker} from '@react-native-picker/picker';
 import Colors from '../../globalStyles/colors';
 import moment from 'moment';
-moment.locale('pt-br');
+import {getItems, setItem} from '../../services/Database';
+import AlertModal from '../../globalComponents/AlertModal';
 import ImagePicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+
+moment.locale('pt-br');
 
 const NewProduct = ({navigation}) => {
   let [code, setcode] = React.useState('');
-  let [composition, setcomposition] = React.useState('');
   let [title, settitle] = React.useState('');
   let [description, setdescription] = React.useState('');
-  let [resumedtitle, setresumedtitle] = React.useState('');
   let [value, setvalue] = React.useState('');
+  let [valueInstallment, setValueInstallment] = React.useState('');
 
-  const [systemtype, setsystemtype] = React.useState();
-  const [invertype, setinvertype] = React.useState();
+  const [modal, setModal] = React.useState(false);
+  const [modalData, setModalData] = React.useState(null);
 
-  let [inverpower, setinverpower] = React.useState('');
+  let [banner, setBanner] = React.useState(
+    'https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png',
+  );
 
-  let [brand, setbrand] = React.useState();
-  let [power, setpower] = React.useState('');
-  let [quantity, setquantity] = React.useState('');
-  let [outputvoltage, setoutputvoltage] = React.useState();
-
-  let [media, setmedia] = React.useState([]);
-
-  const [enviado, setEnviado] = React.useState(false);
+  const [sended, setSended] = React.useState(false);
 
   const pickImages = () => {
     ImagePicker.openPicker({
       includeBase64: true,
-      width: 400,
-      height: 400,
-      multiple: true,
-    }).then(images => {
-      let base64Imgs = [];
-      images.forEach((item, i) => {
-        base64Imgs.push('data:image/png;base64,' + item.data);
+      width: 800,
+      height: 800,
+      mediaType: 'photo',
+      cropping: true,
+    }).then(async images => {
+      setModalData({
+        title: 'Enviando sua imagem',
+        description: 'Aguarde...',
+        icon: 'warning',
+        loading: true,
       });
-      setmedia(base64Imgs);
+      setModal(true);
+      const path = `dlwalt/offers/photos/${new Date().getTime()}.jpg`;
+      const reference = storage().ref(path);
+      const dataUrl = `data:image/png;base64,${images.data}`;
+      try {
+        await reference.putString(dataUrl, 'data_url');
+      } catch (error) {
+        console.log(error);
+        setModalData({
+          title: 'Ocorreu um erro com o envio.',
+          description: error.error.message,
+          icon: 'warning',
+          loading: false,
+        });
+      }
+      const url = await reference.getDownloadURL();
+      setBanner(url);
+      setModal(false);
     });
   };
 
-  const enviarDados = async () => {
-    let products = [];
-
-    database()
-      .ref('/dataWebSite/products')
-      .once('value')
-      .then(snapshot => {
-        if (snapshot.val() !== null) {
-          products = snapshot.val();
-        }
-        products.push({
-          code,
-          composition,
-          postedDate: moment().format(),
-          title,
-          resumedtitle,
-          description,
-          value,
-          media,
-          datasheet: {
-            systemType: systemtype,
-            inverter: {
-              brand: invertype,
-              power: inverpower,
-            },
-            modules: {
-              brand: brand,
-              power: power,
-              quantity: quantity,
-            },
-            outputVoltage: outputvoltage,
-          },
-          paymentIdentifier: {
-            stripe: 'AAA',
-          },
-        });
-
-        database()
-          .ref('/dataWebSite/products')
-          .set(products)
-          .then(() => {
-            setEnviado(true);
-            navigation.goBack();
-          });
-      });
+  const addData = async () => {
+    if (title === '') {
+      return;
+    }
+    const offers = await getItems({path: 'dlwalt/offers'});
+    offers.push({
+      code,
+      banner,
+      title,
+      description,
+      value,
+      valueInstallment,
+    });
+    setItem({
+      path: 'dlwalt/offers',
+      params: offers,
+    });
+    setSended(true);
+    setTimeout(() => {
+      navigation.goBack();
+    }, 2000);
   };
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <List.Section title="Dados Básicos">
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              margin: 50,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                pickImages();
+              }}>
+              <View>
+                <Image
+                  style={styles.banner}
+                  source={{
+                    uri: banner,
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
           <TextInput
             style={styles.textinput}
             label="Código"
@@ -117,108 +136,41 @@ const NewProduct = ({navigation}) => {
             onChangeText={newText => setdescription(newText)}
           />
           <TextInput
-            multiline
-            style={styles.textinput}
-            label="Composição"
-            value={composition}
-            onChangeText={newText => setcomposition(newText)}
-          />
-          <TextInput
             style={styles.textinput}
             placeholder="XX.XXX,XX"
             label="Valor total do Sistema"
             value={value}
             onChangeText={newText => setvalue(newText)}
           />
+          <TextInput
+            style={styles.textinput}
+            placeholder="XX.XXX,XX"
+            label="Valor em 84x"
+            value={value}
+            onChangeText={newText => setValueInstallment(newText)}
+          />
         </List.Section>
-        <List.Section title="Informações Técnicas">
-          <Picker
-            style={styles.picker}
-            selectedValue={systemtype}
-            onValueChange={(itemValue, itemIndex) => setsystemtype(itemValue)}>
-            <Picker.Item label="Tipo de Sistema: Ongrid" value="Ongrid" />
-            <Picker.Item label="Tipo de Sistema: Offgrid" value="Offgrid" />
-          </Picker>
-          <Picker
-            style={styles.picker}
-            selectedValue={invertype}
-            onValueChange={(itemValue, itemIndex) => setinvertype(itemValue)}>
-            <Picker.Item label="Inversor: Growatt" value="Growatt" />
-            <Picker.Item label="Inversor: Fronius" value="Fronius" />
-            <Picker.Item label="Inversor: Outro" value="Outro" />
-          </Picker>
-          <TextInput
-            style={styles.textinput}
-            placeholder="x,x"
-            label="Potência do Inversor (Em kW)"
-            value={inverpower}
-            onChangeText={newText => setinverpower(newText)}
-          />
-          <Picker
-            style={styles.picker}
-            selectedValue={brand}
-            onValueChange={(itemValue, itemIndex) => setbrand(itemValue)}>
-            <Picker.Item label="Módulo Solar: Jinko" value="Jinko" />
-            <Picker.Item label="Módulo Solar: PhonoSolar" value="PhonoSolar" />
-            <Picker.Item label="Módulo Solar: JAsolar" value="JAsolar" />
-            <Picker.Item label="Módulo Solar: Outro" value="Outro" />
-          </Picker>
-          <TextInput
-            style={styles.textinput}
-            placeholder="xxx"
-            label="Potência dos Módulos (Em Watts)"
-            value={power}
-            onChangeText={newText => setpower(newText)}
-          />
-          <TextInput
-            style={styles.textinput}
-            placeholder="xxx"
-            label="Quantidade de Módulos"
-            value={quantity}
-            onChangeText={newText => setquantity(newText)}
-          />
-          <Picker
-            style={styles.picker}
-            selectedValue={outputvoltage}
-            onValueChange={(itemValue, itemIndex) =>
-              setoutputvoltage(itemValue)
-            }>
-            <Picker.Item label="Tensão de Saída: 220v" value="220" />
-            <Picker.Item label="Tensão de Saída: 380v" value="380" />
-            <Picker.Item label="Tensão de Saída: Outro" value="Outro" />
-          </Picker>
-          {media.length !== 0 ? (
-            <Button
-              style={styles.sucessButton}
-              icon="camera"
-              mode="contained"
-              onPress={() => pickImages()}>
-              ({media.length}) Fotos Adicionadas
-            </Button>
-          ) : (
-            <Button
-              style={styles.button}
-              icon="camera"
-              mode="contained"
-              onPress={() => pickImages()}>
-              Adicionar Fotos
-            </Button>
-          )}
-          {enviado === false ? (
-            <Button
-              style={styles.button}
-              icon="send"
-              mode="contained"
-              onPress={() => enviarDados()}>
-              Enviar
-            </Button>
-          ) : (
-            <Button style={styles.sucessButton} icon="check" mode="contained">
-              Enviado
-            </Button>
-          )}
-        </List.Section>
+        {sended === false ? (
+          <Button
+            style={styles.button}
+            icon="send"
+            mode="contained"
+            onPress={() => addData()}>
+            Enviar
+          </Button>
+        ) : (
+          <Button style={styles.sucessButton} icon="check" mode="contained">
+            Enviado
+          </Button>
+        )}
       </ScrollView>
+      <AlertModal
+        visible={modal}
+        data={modalData}
+        onClose={() => {
+          setModal(false);
+        }}
+      />
     </View>
   );
 };
@@ -240,6 +192,10 @@ const styles = new StyleSheet.create({
   },
   picker: {
     color: Colors.color.fulldark,
+  },
+  banner: {
+    width: 200,
+    height: 200,
   },
 });
 
