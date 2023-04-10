@@ -117,13 +117,6 @@ const NewProduct = ({navigation}) => {
             onChangeText={newText => setdescription(newText)}
           />
           <TextInput
-            style={styles.textinput}
-            placeholder="Kit Gerador XXXkW"
-            label="Título Resumo"
-            value={resumedtitle}
-            onChangeText={newText => setresumedtitle(newText)}
-          />
-          <TextInput
             multiline
             style={styles.textinput}
             label="Composição"
