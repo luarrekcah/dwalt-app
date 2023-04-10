@@ -31,6 +31,15 @@ const WeekOffers = ({navigation}) => {
     });
   };
 
+  const deleteItem = id => {
+    const newitems = data.filter(p => p.id !== id);
+    setItem({
+      path: 'dlwalt/offers',
+      params: newitems,
+    });
+    setData(newitems);
+  };
+
   if (loading) {
     return (
       <View>
@@ -128,6 +137,9 @@ const WeekOffers = ({navigation}) => {
                         alignContent: 'center',
                         alignItems: 'center',
                         backgroundColor: '#c72712',
+                      }}
+                      onPress={() => {
+                        deleteItem(item.id);
                       }}>
                       <Text>
                         <Icon name={'trash-can'} size={25} color={'#fff'} />{' '}

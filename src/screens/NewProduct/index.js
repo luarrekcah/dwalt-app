@@ -73,6 +73,7 @@ const NewProduct = ({navigation}) => {
     }
     const offers = await getItems({path: 'dlwalt/offers'});
     offers.push({
+      id: new Date().getTime(),
       code,
       banner,
       title,
