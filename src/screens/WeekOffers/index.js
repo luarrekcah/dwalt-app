@@ -117,6 +117,12 @@ const WeekOffers = ({navigation}) => {
                         alignContent: 'center',
                         alignItems: 'center',
                         backgroundColor: '#325ea8',
+                      }}
+                      onPress={() => {
+                        navigation.navigate('NewProduct', {
+                          isEdit: true,
+                          data: item,
+                        });
                       }}>
                       <Text>
                         <Icon name={'pencil'} size={25} color={'#fff'} />{' '}

@@ -16,19 +16,24 @@ import storage from '@react-native-firebase/storage';
 
 moment.locale('pt-br');
 
-const NewProduct = ({navigation}) => {
-  let [code, setcode] = React.useState('');
-  let [title, settitle] = React.useState('');
-  let [description, setdescription] = React.useState('');
-  let [value, setvalue] = React.useState('');
-  let [valueInstallment, setValueInstallment] = React.useState('');
+const NewProduct = ({route, navigation}) => {
+  const {data} = route.params;
+  const {isEdit} = route.params || false;
+  let [code, setcode] = React.useState(data.code || '');
+  let [title, settitle] = React.useState(data.title || '');
+  let [description, setdescription] = React.useState(data.description || '');
+  let [value, setvalue] = React.useState(data.value || '');
+  let [valueInstallment, setValueInstallment] = React.useState(
+    data.valueInstallment || '',
+  );
+
+  let [banner, setBanner] = React.useState(
+    data.banner ||
+      'https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png',
+  );
 
   const [modal, setModal] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
-
-  let [banner, setBanner] = React.useState(
-    'https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png',
-  );
 
   const [sended, setSended] = React.useState(false);
 
@@ -68,27 +73,50 @@ const NewProduct = ({navigation}) => {
   };
 
   const addData = async () => {
-    if (title === '') {
-      return;
+    if (isEdit) {
+      let offers = await getItems({path: 'dlwalt/offers'});
+      offers.map(item => {
+        if (item.id === data.id) {
+          item.code = code;
+          item.title = title;
+          item.description = description;
+          item.banner = banner;
+          item.value = value;
+          item.valueInstallment = valueInstallment;
+        }
+        return item;
+      });
+      setItem({
+        path: 'dlwalt/offers',
+        params: offers,
+      });
+      setSended(true);
+      setTimeout(() => {
+        navigation.goBack();
+      }, 2000);
+    } else {
+      if (title === '') {
+        return;
+      }
+      const offers = await getItems({path: 'dlwalt/offers'});
+      offers.push({
+        id: new Date().getTime(),
+        code,
+        banner,
+        title,
+        description,
+        value,
+        valueInstallment,
+      });
+      setItem({
+        path: 'dlwalt/offers',
+        params: offers,
+      });
+      setSended(true);
+      setTimeout(() => {
+        navigation.goBack();
+      }, 2000);
     }
-    const offers = await getItems({path: 'dlwalt/offers'});
-    offers.push({
-      id: new Date().getTime(),
-      code,
-      banner,
-      title,
-      description,
-      value,
-      valueInstallment,
-    });
-    setItem({
-      path: 'dlwalt/offers',
-      params: offers,
-    });
-    setSended(true);
-    setTimeout(() => {
-      navigation.goBack();
-    }, 2000);
   };
 
   return (
